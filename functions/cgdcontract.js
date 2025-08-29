@@ -14,52 +14,30 @@ function json(status, body) {
   };
 }
 
-exports.handler = async (event) => {
-  try {
-    if (event.httpMethod === 'OPTIONS') {
-      return {
-        statusCode: 204,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET,OPTIONS'
-        },
-        body: ''
-      };
+export default async (req, context) => {
+  const { searchParams } = new URL(req.url);
+  const year = searchParams.get("year");
+  const keyword = searchParams.get("keyword") || "";
+  const limit = searchParams.get("limit") || 20;
+  const apiKey = "AebJrhT78gJiFGwhjY3tmjnNay9qXqCZ";
+
+  const u = new URL("https://opend.data.go.th/govspending/cgdcontract");
+  u.searchParams.set("api-key", apiKey);
+  u.searchParams.set("year", year);
+  u.searchParams.set("keyword", keyword);
+  u.searchParams.set("limit", limit);
+
+  const r = await fetch(u.toString(), {
+    headers: {
+      "Accept": "application/json",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
     }
+  });
 
-    const API_KEY = process.env.OPEND_API_KEY;
-    if (!API_KEY) return json(500, { error: 'Missing env OPEND_API_KEY' });
+  const text = await r.text(); // debug log
+  console.log("UPSTREAM", r.status, u.toString(), text.slice(0, 200));
 
-    const q = new URLSearchParams(event.rawQuery || '');
-    const year    = q.get('year');
-    const keyword = q.get('keyword') || '';
-    const limit   = q.get('limit') || '20';
-    const offset  = q.get('offset') || '0';
-
-    if (!year) return json(400, { error: 'year (พ.ศ.) is required' });
-
-    // สร้าง URL upstream (service base)
-    const u = new URL('https://govspending.data.go.th/api/service/cgdcontract');
-    u.searchParams.set('api-key', API_KEY);
-    u.searchParams.set('year', year);
-    if (keyword) u.searchParams.set('keyword', keyword);
-    u.searchParams.set('limit', limit);
-    u.searchParams.set('offset', offset);
-
-    const r = await fetch(u.toString(), { headers: { 'Accept': 'application/json' }});
-    const text = await r.text();
-
-    // ไม่พยายาม parse ซ้ำ ให้ส่งต่อดิบ ๆ (แต่ตั้ง content-type ให้แล้ว)
-    return {
-      statusCode: r.status,
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET,OPTIONS'
-      },
-      body: text
-    };
-  } catch (e) {
-    return json(500, { error: String(e) });
-  }
+  return new Response(text, {
+    headers: { "content-type": "application/json" },
+  });
 };
