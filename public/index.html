@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>ค้นหา CGDContract (ผ่าน Netlify Function)</title>
+</head>
+<body>
+  <h2>🔍 ค้นหาโครงการ</h2>
+  <label>ปีงบประมาณ:</label>
+  <input type="number" id="year" value="2568"><br><br>
+
+  <label>Keyword:</label>
+  <input type="text" id="keyword" value="พาหนะ"><br><br>
+
+  <button id="btn">ค้นหา</button>
+  <pre id="out">ยังไม่ค้นหา</pre>
+
+<script>
+document.getElementById('btn').addEventListener('click', async () => {
+  const year = document.getElementById('year').value || '2568';
+  const keyword = document.getElementById('keyword').value || 'พาหนะ';
+  const limit = 20;
+
+  const url = new URL('/api/govspending', location.origin);
+  url.search = new URLSearchParams({ path: 'cgdcontract', year, keyword, limit }).toString();
+
+  const out = document.getElementById('out');
+  out.textContent = '⏳ กำลังโหลด...\n' + url.toString();
+
+  try {
+    const res = await fetch(url.toString(), { headers: { Accept: 'application/json' } });
+    const data = await res.json();
+    out.textContent = JSON.stringify(data, null, 2);
+  } catch (e) {
+    out.textContent = '❌ ' + e;
+  }
+});
+</script>
+</body>
+</html>
