@@ -21,14 +21,21 @@ document.getElementById('btn').addEventListener('click', async () => {
   const keyword = document.getElementById('keyword').value || 'พาหนะ';
   const limit = 20;
 
-  const url = new URL('/api/govspending', location.origin);
-  url.search = new URLSearchParams({ path: 'cgdcontract', year, keyword, limit }).toString();
+  // ✅ ใช้ relative path + URLSearchParams เท่านั้น
+  const params = new URLSearchParams({
+    path: 'cgdcontract',
+    year,
+    keyword,
+    limit
+  });
+
+  const url = '/api/govspending?' + params.toString();
 
   const out = document.getElementById('out');
-  out.textContent = '⏳ กำลังโหลด...\n' + url.toString();
+  out.textContent = '⏳ กำลังโหลด...\n' + url;
 
   try {
-    const res = await fetch(url.toString(), { headers: { Accept: 'application/json' } });
+    const res = await fetch(url, { headers: { Accept: 'application/json' } });
     const data = await res.json();
     out.textContent = JSON.stringify(data, null, 2);
   } catch (e) {
