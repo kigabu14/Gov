@@ -7,3 +7,6 @@
   to   = "/.netlify/functions/cgdcontract"
   status = 200
   force  = true
+  name = "govspending-proxy"
+  main = "govspending.js"
+  compatibility_date = "2024-10-01"
