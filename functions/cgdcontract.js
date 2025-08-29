@@ -2,17 +2,7 @@
 // ✅ ใช้ fetch ที่มีใน Node 18 (Netlify ใช้อยู่แล้ว) ไม่ต้องติดตั้ง node-fetch
 // ✅ ใช้ CommonJS export ชัวร์สุด
 
-function json(status, body) {
-  return {
-    statusCode: status,
-    headers: {
-      'Content-Type': 'application/json; charset=utf-8',
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET,OPTIONS'
-    },
-    body: JSON.stringify(body)
-  };
-}
+
 
 export default async (req, context) => {
   const { searchParams } = new URL(req.url);
