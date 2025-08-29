@@ -3,7 +3,7 @@
   publish   = "public"
 
 [[redirects]]
-  from = "/api/govspending"
-  to   = "/.netlify/functions/govspending"
+  from = "/api/cgdcontract"
+  to   = "/.netlify/functions/cgdcontract"
   status = 200
   force  = true
