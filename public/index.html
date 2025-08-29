@@ -2,42 +2,54 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <title>ค้นหา CGDContract (ผ่าน Netlify Function)</title>
+  <title>CGDContract (Netlify Proxy)</title>
+  <style>
+    body{font-family:system-ui, sans-serif; margin:24px}
+    label{display:inline-block; width:120px}
+    input{padding:6px 8px; margin:4px 0}
+    button{padding:8px 12px; margin-top:8px}
+    pre{white-space:pre-wrap; word-break:break-word; background:#f6f6f6; padding:12px; border-radius:8px}
+  </style>
 </head>
 <body>
-  <h2>🔍 ค้นหาโครงการ</h2>
-  <label>ปีงบประมาณ:</label>
-  <input type="number" id="year" value="2568"><br><br>
+  <h2>🔍 ค้นหา CGDContract (ปี + keyword, limit=20)</h2>
 
-  <label>Keyword:</label>
-  <input type="text" id="keyword" value="1"><br><br>
+  <div>
+    <label>ปีงบประมาณ:</label>
+    <input id="year" type="number" value="2568">
+  </div>
+  <div>
+    <label>Keyword:</label>
+    <input id="keyword" type="text" value="พาหนะ">
+  </div>
+  <div>
+    <label>Limit:</label>
+    <input id="limit" type="number" value="20" min="1" max="1000">
+  </div>
 
   <button id="btn">ค้นหา</button>
+
+  <h3>ผลลัพธ์</h3>
   <pre id="out">ยังไม่ค้นหา</pre>
 
 <script>
 document.getElementById('btn').addEventListener('click', async () => {
   const year = document.getElementById('year').value || '2568';
-  const keyword = document.getElementById('keyword').value || 'พาหนะ';
-  const limit = 20;
+  const keyword = document.getElementById('keyword').value || '';
+  const limit = document.getElementById('limit').value || '20';
 
-  // ✅ ใช้ relative path + URLSearchParams เท่านั้น
-  const params = new URLSearchParams({
-    path: 'cgdcontract',
-    year,
-    keyword,
-    limit
-  });
-
-  const url = '/api/govspending?' + params.toString();
+  // ✅ เรียก path เดียว ไม่มี path= ให้หลุดไปปลายทาง
+  const qs = new URLSearchParams({ year, keyword, limit });
+  const url = '/api/cgdcontract?' + qs.toString();
 
   const out = document.getElementById('out');
-  out.textContent = '⏳ กำลังโหลด...\n' + url;
+  out.textContent = 'GET ' + url + '\n\n⏳ โหลด...';
 
   try {
-    const res = await fetch(url, { headers: { Accept: 'application/json' } });
-    const data = await res.json();
-    out.textContent = JSON.stringify(data, null, 2);
+    const res = await fetch(url, { headers: { 'Accept': 'application/json' }});
+    const text = await res.text();
+    // แสดงดิบ ๆ ถ้าเป็น JSON ก็จะอ่านง่าย
+    out.textContent = 'HTTP ' + res.status + ' ' + res.statusText + '\n\n' + text;
   } catch (e) {
     out.textContent = '❌ ' + e;
   }
