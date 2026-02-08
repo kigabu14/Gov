@@ -1,59 +1,212 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <title>CGDContract (Netlify Proxy)</title>
-  <style>
-    body{font-family:system-ui, sans-serif; margin:24px}
-    label{display:inline-block; width:120px}
-    input{padding:6px 8px; margin:4px 0}
-    button{padding:8px 12px; margin-top:8px}
-    pre{white-space:pre-wrap; word-break:break-word; background:#f6f6f6; padding:12px; border-radius:8px}
-  </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Plug2Plug | จอแอนดรอยติดรถยนต์ + ติดตั้ง</title>
+  <meta name="description" content="ศูนย์ติดตั้งจอแอนดรอยติดรถยนต์ พร้อมบริการติดตั้งที่ร้านและนอกสถานที่" />
+  <link rel="stylesheet" href="./styles.css" />
 </head>
+
 <body>
-  <h2>🔍 ค้นหา CGDContract (ปี + keyword, limit=20)</h2>
-
-  <div>
-    <label>ปีงบประมาณ:</label>
-    <input id="year" type="number" value="2568">
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="container topbar__inner">
+      <div class="topbar__left">
+        <span>LINE: <b>@plug2plug</b></span>
+        <span class="dot">•</span>
+        <span>อ่อนนุช 46 กทม</span>
+      </div>
+      <div class="topbar__right">
+        <a class="link" href="tel:0986166928">โทร 098-616-6928</a>
+      </div>
+    </div>
   </div>
-  <div>
-    <label>Keyword:</label>
-    <input id="keyword" type="text" value="พาหนะ">
-  </div>
-  <div>
-    <label>Limit:</label>
-    <input id="limit" type="number" value="20" min="1" max="1000">
-  </div>
 
-  <button id="btn">ค้นหา</button>
+  <!-- Navbar -->
+  <header class="header">
+    <div class="container header__inner">
+      <a class="brand" href="#home">
+        <div class="brand__logo">P2P</div>
+        <div class="brand__text">
+          <div class="brand__name">Plug2Plug</div>
+          <div class="brand__tag">Android Head Unit • Installation</div>
+        </div>
+      </a>
 
-  <h3>ผลลัพธ์</h3>
-  <pre id="out">ยังไม่ค้นหา</pre>
+      <button class="burger" id="burger" aria-label="open menu">☰</button>
 
-<script>
-document.getElementById('btn').addEventListener('click', async () => {
-  const year = document.getElementById('year').value || '2568';
-  const keyword = document.getElementById('keyword').value || '';
-  const limit = document.getElementById('limit').value || '20';
+      <nav class="nav" id="nav">
+        <a href="#home">หน้าหลัก</a>
+        <a href="#about">เกี่ยวกับเรา</a>
+        <a href="#products">สินค้า</a>
+        <a href="#booking">จองคิว</a>
+        <a href="#contact">ติดต่อเรา</a>
+        <a class="btn btn--line" href="https://lin.ee/xxxx" target="_blank" rel="noreferrer">แอดไลน์</a>
+      </nav>
+    </div>
+  </header>
 
-  // ✅ เรียก path เดียว ไม่มี path= ให้หลุดไปปลายทาง
-  const qs = new URLSearchParams({ year, keyword, limit });
-  const url = '/api/cgdcontract?' + qs.toString();
+  <!-- Hero -->
+  <section class="hero" id="home">
+    <div class="container hero__inner">
+      <div class="hero__copy">
+        <p class="badge">ศูนย์ติดตั้งจอแอนดรอย • งานเนี๊ยบ • รับประกันหลังติดตั้ง</p>
+        <h1>อัปเกรดรถให้ “ฉลาดขึ้น” แบบไม่ต้องง้อพ่อมด</h1>
+        <p class="muted">
+          จอแอนดรอยติดรถยนต์ + กล้องหลัง + ระบบเสียง พร้อมติดตั้งที่ร้าน/นอกสถานที่
+        </p>
+        <div class="hero__cta">
+          <a class="btn btn--primary" href="https://lin.ee/xxxx" target="_blank" rel="noreferrer">สอบถามทาง LINE</a>
+          <a class="btn btn--ghost" href="#products">ดูสินค้า</a>
+        </div>
 
-  const out = document.getElementById('out');
-  out.textContent = 'GET ' + url + '\n\n⏳ โหลด...';
+        <div class="hero__trust">
+          <div class="chip">ช่างมืออาชีพ</div>
+          <div class="chip">งานเก็บสวย</div>
+          <div class="chip">ประเมินราคาฟรี</div>
+        </div>
+      </div>
 
-  try {
-    const res = await fetch(url, { headers: { 'Accept': 'application/json' }});
-    const text = await res.text();
-    // แสดงดิบ ๆ ถ้าเป็น JSON ก็จะอ่านง่าย
-    out.textContent = 'HTTP ' + res.status + ' ' + res.statusText + '\n\n' + text;
-  } catch (e) {
-    out.textContent = '❌ ' + e;
-  }
-});
-</script>
+      <div class="hero__panel">
+        <div class="panel">
+          <div class="panel__title">โปรแนะนำวันนี้</div>
+          <div class="panel__item">
+            <div>
+              <b>Q-Series / T-Series</b>
+              <div class="muted">RAM/ROM หลายสเปค • จอ 2K / 1.5K</div>
+            </div>
+            <a class="btn btn--small" href="#booking">จองคิว</a>
+          </div>
+          <div class="panel__note muted">
+            * ใส่รูปสินค้าจริง/รีวิวลูกค้าได้ในส่วนนี้ (จะทำให้ปิดการขายไวขึ้นแบบผิดกฎหมายฟิสิกส์)
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why -->
+  <section class="section" id="about">
+    <div class="container">
+      <div class="section__head">
+        <h2>ทำไมต้องเลือก Plug2Plug</h2>
+        <p class="muted">บริการด้วยใจ เพื่อประสบการณ์ที่ดีที่สุดของคุณ</p>
+      </div>
+
+      <div class="grid3">
+        <div class="card">
+          <div class="card__icon">🧰</div>
+          <h3>ช่างมืออาชีพ</h3>
+          <p class="muted">ติดตั้งโดยทีมช่างชำนาญ งานเนี๊ยบ ไม่ตัดต่อมั่ว</p>
+        </div>
+        <div class="card">
+          <div class="card__icon">📍</div>
+          <h3>บริการที่ร้าน</h3>
+          <p class="muted">เดินทางสะดวก พร้อมตรวจเช็กระบบก่อนส่งมอบ</p>
+        </div>
+        <div class="card">
+          <div class="card__icon">🚗</div>
+          <h3>บริการนอกสถานที่</h3>
+          <p class="muted">ติดตั้งถึงบ้าน/ที่ทำงาน ประหยัดเวลาคุณ</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Products -->
+  <section class="section" id="products">
+    <div class="container">
+      <div class="section__head">
+        <h2>สินค้าแนะนำ</h2>
+        <p class="muted">เลือกใส่ “รุ่นยอดนิยม” ก่อน แล้วค่อยแตกไปหน้ารวมสินค้า</p>
+      </div>
+
+      <div class="products" id="productGrid">
+        <!-- card template in JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Booking -->
+  <section class="section section--alt" id="booking">
+    <div class="container">
+      <div class="section__head">
+        <h2>จองคิวติดตั้ง</h2>
+        <p class="muted">กรอกข้อมูลแล้วกดส่ง ระบบจะพาไปส่งข้อความใน LINE ให้พร้อมรายละเอียด</p>
+      </div>
+
+      <form class="form" id="bookingForm">
+        <div class="form__row">
+          <label>ชื่อ-นามสกุล*</label>
+          <input required name="fullname" placeholder="เช่น บอล ปลั๊กทูปลั๊ก" />
+        </div>
+        <div class="form__row">
+          <label>เบอร์โทรศัพท์*</label>
+          <input required name="phone" placeholder="เช่น 0986166928" />
+        </div>
+        <div class="form__row">
+          <label>LINE ID (ถ้ามี)</label>
+          <input name="lineid" placeholder="@xxxx" />
+        </div>
+        <div class="form__row">
+          <label>เลือกรุ่นที่ต้องการติดตั้ง*</label>
+          <select required name="product" id="productSelect"></select>
+        </div>
+        <div class="form__row">
+          <label>วันและเวลาที่สะดวก*</label>
+          <input required type="datetime-local" name="datetime" />
+        </div>
+
+        <div class="form__actions">
+          <button class="btn btn--primary" type="submit">ยืนยันการจองคิว (ส่งเข้า LINE)</button>
+          <a class="btn btn--ghost" href="#contact">ดูช่องทางติดต่อ</a>
+        </div>
+
+        <p class="muted small">
+          หมายเหตุ: ฟอร์มนี้ “ไม่เก็บข้อมูลบนเว็บ” จนกว่าคุณจะต่อ Google Sheets/ฐานข้อมูลเอง (ปลอดภัยและง่ายต่อการเริ่ม)
+        </p>
+      </form>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="section" id="contact">
+    <div class="container">
+      <div class="section__head">
+        <h2>ติดต่อเรา</h2>
+        <p class="muted">ทักมาได้เลย พร้อมให้คำปรึกษาและประเมินราคาฟรี</p>
+      </div>
+
+      <div class="contact">
+        <div class="card">
+          <h3>Plug2Plug</h3>
+          <p class="muted">888 ซ.อ่อนนุช 46 แขวงอ่อนนุช เขตสวนหลวง กทม 10250</p>
+          <div class="contact__actions">
+            <a class="btn btn--line" href="https://lin.ee/xxxx" target="_blank" rel="noreferrer">แอดไลน์</a>
+            <a class="btn btn--ghost" href="tel:0986166928">โทร</a>
+            <a class="btn btn--ghost" href="https://maps.app.goo.gl/xxxx" target="_blank" rel="noreferrer">ขอเส้นทาง</a>
+          </div>
+        </div>
+
+        <div class="map card">
+          <div class="map__placeholder muted">
+            วาง Google Maps Embed ตรงนี้ (iframe) หรือใส่รูปแผนที่ก็ได้
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="muted">© <span id="year"></span> Plug2Plug. All Rights Reserved.</div>
+      <div class="footer__links">
+        <a class="link" href="#home">ขึ้นบนสุด</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./app.js"></script>
 </body>
 </html>
