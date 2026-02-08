@@ -1,11 +1,41 @@
-const products = [
-  { sku: "T5-2-64", name: "T5 RAM 2 ROM 64", oldPrice: 6000, price: 5000, tag: "ยอดนิยม" },
-  { sku: "T6-3-64", name: "T6 RAM 3 ROM 64", oldPrice: 6900, price: 5900, tag: "คุ้มค่า" },
-  { sku: "Q10-6-128", name: "Q10 RAM 6 ROM 128", oldPrice: 18000, price: 17000, tag: "Q-Series" },
-  { sku: "Q11-8-256", name: "Q11 RAM 8 ROM 256", oldPrice: 20900, price: 19900, tag: "ตัวท็อป" },
-  { sku: "Q12-12-256", name: "Q12 RAM 12 ROM 256", oldPrice: 25900, price: 24900, tag: "ตัวท็อป" },
-  { sku: "CAM-360", name: "กล้อง 360° (แพ็คเกจ)", oldPrice: 0, price: 0, tag: "สอบถามราคา" },
-];
+const API_URL = "https://script.google.com/macros/s/AKfycbyjvsULkiZOOJIUuqy4xENFRutNL8yt_Th9B_YA6ec5c89xxbxjiuVTbYH5tQIP4YbzmQ/exec";
+
+async function loadProducts(){
+
+  const res = await fetch(API_URL);
+  const data = await res.json();
+
+  const products = data.products;
+
+  const grid = document.getElementById("productGrid");
+  const select = document.getElementById("productSelect");
+
+  grid.innerHTML = products.map(p => `
+    <div class="card">
+      <div class="product__img">
+        ${p.image_url ? `<img src="${p.image_url}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">` : `Plug2Plug`}
+      </div>
+
+      <div class="muted small">${p.tag || ""}</div>
+      <h3>${p.name}</h3>
+
+      <div class="price">
+        ${p.old_price_thb ? `<del>฿${Number(p.old_price_thb).toLocaleString()}</del>`:""}
+        <b>฿${Number(p.price_thb).toLocaleString()}</b>
+      </div>
+
+      <button class="btn btn--primary" onclick="pickProduct('${p.sku}')">
+        สนใจรุ่นนี้
+      </button>
+    </div>
+  `).join("");
+
+  select.innerHTML = products.map(p =>
+    `<option value="${p.sku}">${p.name}</option>`
+  ).join("");
+}
+
+loadProducts();
 
 function thb(n){
   if(!n) return "สอบถาม";
